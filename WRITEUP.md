@@ -87,3 +87,13 @@ Each weighted criterion receives a score from 0 to 100:
 Total = experience × 0.30 + price × 0.25 + timeline × 0.15 + warranty × 0.15 + team × 0.15.
 
 Use unrounded totals for ranking and display two decimal places. Ties are resolved by lower price, then shorter timeline. Remaining ties share a rank.
+
+
+
+## Sample Evaluation Assumption
+
+For this example, I assume an evaluation date of 1 January 2026 and
+a five-year experience window covering 2021–2025. This is a stated
+assumption, not a date supplied by the brief. A and E's counts since
+2021 are treated as qualifying. C's count since 2020 needs clarification
+before scoring. In production, the admin must confirm the exact window.
