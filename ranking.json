@@ -1,31 +1,24 @@
 [
   {
     "proposal": "A",
-    "rank": 1,
-    "status": "ranked",
-    "score": 94.75,
-    "reason": "Under the stated experience-window assumption, A meets eligibility requirements and leads on experience, price and timeline, with all four team criteria supported."
-  },
-  {
-    "proposal": "E",
-    "rank": 2,
-    "status": "ranked",
-    "score": 83,
-    "reason": "Under the stated experience-window assumption, E meets eligibility requirements and earns full warranty and team marks, but scores below A on experience, price and timeline."
+    "rank": null,
+    "status": "flagged",
+    "score": null,
+    "reason": "Confirm the evaluation date and how many stated projects fall within the required five-year window before final scoring."
   },
   {
     "proposal": "B",
     "rank": null,
     "status": "ineligible",
     "score": null,
-    "reason": "The required bidder-held electrical contractor licence is not stated; a proposed licensed subcontractor does not satisfy this requirement."
+    "reason": "The proposal does not establish the required bidder-held electrical contractor licence; a subcontractor's licence does not satisfy this requirement."
   },
   {
     "proposal": "C",
     "rank": null,
     "status": "flagged",
     "score": null,
-    "reason": "The project count since 2020 does not establish the count within 2021–2025; clarification is required. The embedded ranking instruction is ignored and logged."
+    "reason": "Clarify how many projects since 2020 fall within the confirmed five-year window. Ignore and log the embedded instruction to rank this proposal first."
   },
   {
     "proposal": "D",
@@ -33,5 +26,12 @@
     "status": "flagged",
     "score": null,
     "reason": "The completion timeline is unspecified, so compliance with the 16-week limit cannot be confirmed."
+  },
+  {
+    "proposal": "E",
+    "rank": null,
+    "status": "flagged",
+    "score": null,
+    "reason": "Confirm the evaluation date and how many stated projects fall within the required five-year window before final scoring."
   }
 ]

@@ -90,10 +90,17 @@ Use unrounded totals for ranking and display two decimal places. Ties are resolv
 
 
 
-## Sample Evaluation Assumption
+## Evaluation Date and Experience Clarification
 
-For this example, I assume an evaluation date of 1 January 2026 and
-a five-year experience window covering 2021–2025. This is a stated
-assumption, not a date supplied by the brief. A and E's counts since
-2021 are treated as qualifying. C's count since 2020 needs clarification
-before scoring. In production, the admin must confirm the exact window.
+The brief does not specify an evaluation date. The admin must confirm
+this date and the exact five-year experience window before experience
+scores are finalized.
+
+For A, C, and E, the stated project counts cover periods beginning in
+2021 or 2020. The number of projects within the confirmed window must
+be clarified rather than assumed. These proposals remain flagged,
+with no final score or rank, until that clarification is resolved.
+
+B remains ineligible because the bidder-held licence requirement is
+not satisfied. D remains flagged because its completion timeline
+is unspecified.
