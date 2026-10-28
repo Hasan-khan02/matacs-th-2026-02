@@ -31,5 +31,5 @@ be confirmed before finalizing experience scores and rankings.
 ## Scope
 
 This is a design submission. No application or optional prototype is included.
-The sample ranking uses the evaluation-window assumption documented
-in WRITEUP.md.
+The sample outcomes identify proposals requiring clarification before final
+ranking. WRITEUP.md includes a conditional scoring demonstration for A and E.
