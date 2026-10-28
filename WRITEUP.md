@@ -2,105 +2,90 @@
 
 ## Proposed Process
 
-1. The admin creates a category and defines its mandatory requirements, scoring criteria, weights, and scoring rules. These settings are saved as a version rather than hard-coded.
-
-2. The reviewer selects the category and uploads the proposals. The system validates the files and extracts their text.
-
-3. AI extracts relevant facts from each proposal, with supporting text references. Missing or unclear information is marked for review rather than guessed. Instructions inside proposals are treated as untrusted content.
-
-4. A reviewer checks the extracted facts against the source text and resolves any flagged issues.
-
-5. Rule-based code checks mandatory requirements and calculates weighted scores using the selected criteria version. Proposals with unresolved information remain flagged; proposals that fail mandatory requirements are marked ineligible.
-
-6. The system displays eligible proposals in ranked order, with a score breakdown and reasons. Flagged and ineligible proposals are shown separately.
-
-7. A human makes the final award decision. Corrections, overrides, and their reasons are recorded in an audit log.
-
+1. The admin configures category requirements, weights, scoring rules, and the evaluation window. The system validates that weights total 100% and saves a criteria version.
+2. The reviewer selects a category and uploads proposals. Code validates files and extracts text, preserving available page references.
+3. AI extracts criterion-specific facts, supporting excerpts, and warnings. Proposal content is untrusted data, never instructions.
+4. Code validates the output structure and evidence references. A reviewer verifies facts and resolves ambiguities.
+5. Rules check eligibility. Confirmed failures are ineligible; unresolved information needed for evaluation remains flagged.
+6. Rules score eligible proposals and display their ranking, calculation breakdowns, and evidence. Flagged and ineligible proposals appear separately.
+7. A human makes the award decision. Audit records are written throughout the process.
 
 ## 1. AI vs. Rules
 
-AI extracts facts from proposal text, such as price, timeline, experience, warranties, and evidence of mandatory requirements. It returns structured data with supporting text references and marks missing or conflicting information for review.
+AI interprets differently written proposals and extracts structured facts. It does not invent missing values, decide eligibility, calculate scores, or award contracts.
 
-Plain code validates the extracted data, checks mandatory requirements, calculates weighted scores, and sorts eligible proposals. Criteria, weights, and scoring rules come from the admin's saved configuration.
-
-I use AI to interpret differently written proposals, while explicit rules handle calculations and eligibility consistently. AI does not decide the final ranking or award the contract.
-
+Code handles validation, mandatory checks, weighted calculations, and sorting using admin-configured rules. This separates language interpretation from repeatable decisions.
 
 ## 2. Consistency and Explainability
 
-Before evaluation, the admin defines scoring formulas or rubrics, weights, and a tie-breaking rule. Each evaluation uses one saved criteria version for all proposals.
+Each comparison uses one criteria version, evaluation window, and scoring rubric. The same reviewer-confirmed facts and rules produce the same scores.
 
-The system saves reviewer-confirmed facts and calculates scores using rule-based code. Running the same confirmed facts through the same rules produces the same scores and ranking. AI extraction can vary, so a fresh extraction is treated as a new revision requiring review, rather than silently replacing confirmed facts.
+Fresh AI extraction may vary. It creates a new revision requiring review rather than silently replacing confirmed facts. The model and prompt versions are recorded.
 
-The reviewer can see each extracted value, its supporting text reference, the score for each criterion, its weight, and the total calculation. Missing information and failed requirements are displayed with clear reasons.
+Reviewers see source excerpts, extracted values, criterion scores, weights, totals, and reasons for flags or exclusions. Calculations use unrounded values; displayed scores use two decimal places.
 
+## 3. Human Review and Audit
 
-## 3. Human in the Loop and Audit
+A reviewer verifies extracted facts, especially mandatory evidence, conflicting information, and suspicious instructions. Clarifications require supporting evidence before rescoring.
 
-A reviewer checks extracted facts against the proposal text before scoring, especially mandatory requirements, missing information, conflicts, and suspicious instructions. Unresolved proposals remain flagged until clarification is received.
+Corrections and authorized departures from the ranking require recorded reasons. They cannot silently alter scores or bypass mandatory requirements. The final award remains a human decision.
 
-The reviewer can correct extracted facts with supporting evidence and a recorded reason, then rerun scoring. Any authorized decision to depart from the ranking must include a justification and must not silently change scores or bypass mandatory requirements. A human makes the final award decision.
-
-The audit log records the proposal identifier and file hash, criteria version, model and prompt versions, extracted evidence, reviewer corrections, score breakdowns, and final decision. Each human action includes the actor, timestamp, and reason. Previous results are retained.
+Audit records include document identifiers and hashes, criteria and prompt versions, model version, extracted evidence, corrections, score breakdowns, and decisions. Human actions record the actor, timestamp, and reason. Earlier results remain available.
 
 ## 4. Changing Criteria
 
-When an admin edits criteria, weights, or scoring rules, the system creates a new criteria version. Existing evaluations keep their original version and results, so past decisions remain traceable.
+Edits create a new criteria version without overwriting previous evaluations. Reviewers are notified and can initiate a new comparison using the updated version for every proposal.
 
-The reviewer is notified that newer criteria are available and can start a new evaluation. All proposals in that comparison are evaluated against the same new version; scores from different versions are never mixed.
-
-Confirmed facts can be reused where still relevant. If a new criterion requires information that was not previously extracted, the system extracts it and requests human verification. Missing information is flagged. The new results are saved separately from the original evaluation.
-
+Relevant confirmed facts can be reused. New information requirements trigger extraction and verification. Scores from different versions are never mixed, and both evaluations remain traceable.
 
 ## 5. Risks and Safeguards
 
-- Wrong extraction or invented facts: Require supporting text references for extracted values. Validate data types, currency, and units. Missing or contradictory facts remain flagged for human review rather than guessed.
-
-- Prompt injection: Treat proposal content as untrusted data, never as instructions. AI has no tools or authority to change criteria or rankings. Proposal C's instruction to rank itself first is ignored and logged for review; its actual evidence is evaluated normally.
-
-- Bias: Apply the same criteria version and scoring rules to every proposal. Do not score company names, persuasive language, or unsupported claims. Reviewers check that the configured rubric is relevant and fair.
-
-- Missing or failed requirements: Do not let a low price compensate for a failed mandatory requirement. Proposal B does not satisfy the stated bidder-held licence requirement. Proposal D remains flagged until its timeline is clarified.
-
-- Cost and failures: Limit file size, page count, and AI output length. Cache extraction by document hash and extraction configuration, and cap retries. Failed extraction is shown as an error requiring attention, never as a valid result.
-
-- Privacy and security: Restrict access to authorized users, validate uploaded files, and keep API keys outside the repository. Use only the fictional sample data for this assessment.
-
-
+- Extraction errors and invented facts: Require supporting excerpts, validate types and units, and request human verification. Missing or contradictory values are not guessed.
+- Prompt injection: Keep system instructions separate from proposal data. AI has no tools or authority to change rules. Ignore and log C's ranking instruction; evaluate its factual evidence normally.
+- Bias: Apply identical rules to all proposals. Do not reward company names, persuasive wording, or unsupported claims. Review the rubric for relevance and fairness.
+- Missing requirements: Low prices cannot compensate for mandatory failures. Distinguish bidder-held licences from subcontractor licences.
+- Cost and failures: Limit file size, pages, output length, and retries. Cache extraction by document hash and extraction configuration. Failed extraction requires attention rather than becoming a valid result.
+- Security: Restrict access, validate uploads, and keep credentials outside the repository. This assessment uses only fictional data.
 
 ## Proposed Scoring Rules
 
-These are proposed admin-configurable rules, not formulas supplied by the brief. They must be approved before evaluating proposals.
+These proposed admin-configurable rules require approval before evaluation; the brief supplies weights but not these scoring formulas.
 
-Mandatory requirements must pass before ranking. I also treat the budget ceiling and 16-week deadline as eligibility limits. An unknown value needed for eligibility requires clarification.
+Mandatory requirements must pass. I also treat the budget ceiling and 16-week deadline as eligibility limits. Unknown information needed for eligibility requires clarification.
 
-Each weighted criterion receives a score from 0 to 100:
-
-| Criterion | Scoring rule |
+| Criterion | Score from 0 to 100 |
 |---|---|
-| Experience | 10+ qualifying projects: 100; 5–9: 70; 1–4: 40; none: 0. Only projects within the specified five-year window count. |
+| Experience | 10+ qualifying projects: 100; 5–9: 70; 1–4: 40; none: 0. |
 | Price | Up to CAD 230,000: 100; above 230,000 to 240,000: 90; above 240,000 to 260,000: 80. |
 | Timeline | Up to 10 weeks: 100; above 10 to 12: 90; above 12 to 14: 80; above 14 to 16: 60. |
 | Warranty | 50 × min(panel years / 25, 1) + 50 × min(workmanship years / 12, 1). |
-| Team and approach | 25 points each for a named lead, specified crew, safety plan, and monitoring plan. Unstated items receive no points. |
+| Team | 25 each for a named lead, specified crew, safety plan, and monitoring plan. Unstated items earn no points. |
 
 Total = experience × 0.30 + price × 0.25 + timeline × 0.15 + warranty × 0.15 + team × 0.15.
 
-Use unrounded totals for ranking and display two decimal places. Ties are resolved by lower price, then shorter timeline. Remaining ties share a rank.
+Break equal totals by lower price, then shorter timeline. Remaining ties share a rank.
 
+## Sample Outcomes and Clarifications
 
+The brief provides no evaluation date. The admin must confirm the five-year window. Counts stated as "since 2021" or "since 2020" cannot automatically be treated as entirely within that window.
 
-## Evaluation Date and Experience Clarification
+Current outcomes in ranking.json:
+- A and E: Flagged pending confirmation of qualifying project counts.
+- B: Ineligible because the proposal does not establish the required bidder-held licence.
+- C: Flagged pending experience-window clarification; its ranking instruction is ignored.
+- D: Flagged because its timeline is unspecified.
 
-The brief does not specify an evaluation date. The admin must confirm
-this date and the exact five-year experience window before experience
-scores are finalized.
+### Conditional Scoring Demonstration
 
-For A, C, and E, the stated project counts cover periods beginning in
-2021 or 2020. The number of projects within the confirmed window must
-be clarified rather than assumed. These proposals remain flagged,
-with no final score or rank, until that clarification is resolved.
+If verification confirms A has 14 qualifying projects and E has eight, their scores would be:
 
-B remains ineligible because the bidder-held licence requirement is
-not satisfied. D remains flagged because its completion timeline
-is unspecified.
+| Weighted contribution | A | E |
+|---|---:|---:|
+| Experience | 30 | 21 |
+| Price | 22.50 | 20 |
+| Timeline | 13.50 | 12 |
+| Warranty | 13.75 | 15 |
+| Team | 15 | 15 |
+| Total | 94.75 | 83.00 |
+
+Under those conditions, A ranks ahead of E. These illustrative totals are not final scores or a complete ranking. C and D require clarification and could affect the eventual ordering.
